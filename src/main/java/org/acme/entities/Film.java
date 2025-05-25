@@ -3,6 +3,7 @@ package org.acme.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Setter
@@ -18,14 +19,14 @@ public class Film {
     @Column(name = "annee", nullable = false)
     private Integer annee;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_realisateur")
-    private Artiste idRealisateur;
-
     @Column(name = "genre", nullable = false, length = 30)
     private String genre;
 
     @Column(name = "resume", columnDefinition = "text")
     private String resume;
+
+    @ManyToOne
+    @JoinColumn(name = "id_realisateur")
+    private Artiste idRealisateur;
 
 }

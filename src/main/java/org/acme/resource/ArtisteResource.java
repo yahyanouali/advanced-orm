@@ -1,12 +1,12 @@
 package org.acme.resource;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.acme.entities.Artiste;
-import org.acme.service.ArtisteService;
+import org.acme.service.ArtisteRepository;
 
 import java.util.List;
 
@@ -14,22 +14,44 @@ import java.util.List;
 @Path("/artists")
 public class ArtisteResource {
     @Inject
-    ArtisteService artisteService;
+    ArtisteRepository artisteRepository;
 
     @GET
-    @Path("/")
-    public List<Artiste> getArtists() {
-        var artistes = artisteService.getArtistes();
-        log.info("Artistes trouvés : {}", artistes);
-        return artistes;
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Artiste> getAllArtists() {
+        return artisteRepository.getArtistes();
     }
 
     @GET
     @Path("/{id}")
-    public Artiste getArtistById(@PathParam("id") Integer id) {
-        var artiste = artisteService.getArtisteById(id);
-        log.info("Artiste trouvé : {}", artiste);
-        return artiste.orElse(null);
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getArtistById(@PathParam("id") Integer id) {
+        return Response.ok(artisteRepository.getArtisteById(id)).build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createArtist(Artiste artiste) {
+        artisteRepository.saveArtiste(artiste);
+        return Response.status(Response.Status.CREATED).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateArtist(@PathParam("id") Integer id, Artiste artiste) {
+        artiste.setId(id);
+        artisteRepository.updateArtiste(artiste);
+        return Response.ok().build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteArtist(@PathParam("id") Integer id) {
+        artisteRepository.deleteArtiste(id);
+        return Response.noContent().build();
     }
 
 }
