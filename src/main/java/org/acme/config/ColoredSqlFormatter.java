@@ -22,10 +22,10 @@ public class ColoredSqlFormatter implements MessageFormattingStrategy {
 
     @Override
     public String formatMessage(int connectionId, String now, long elapsed, String category, String prepared, String sql, String url) {
-        if (sql == null || sql.isBlank()) return "";
+        if (prepared == null || prepared.isBlank()) return "";
 
         String formattedTime = LocalDateTime.now().format(FORMATTER);
-        sql = colorizeSQL(sql);
+        prepared = colorizeSQL(prepared);
 
         String header = String.format("%s%s%s | %sConnection: %d%s | %sExecution Time: %s ms%s | %s%s%s",
                 ANSI_CYAN, formattedTime, ANSI_RESET,
@@ -33,7 +33,7 @@ public class ColoredSqlFormatter implements MessageFormattingStrategy {
                 ANSI_YELLOW, elapsed, ANSI_RESET,
                 ANSI_PURPLE, category, ANSI_RESET);
 
-        String[] lines = sql.split("\n");
+        String[] lines = prepared.split("\n");
         int maxLength = Math.max(80, Arrays.stream(lines)
                 .map(line -> line.replaceAll("\u001B\\[[;\\d]*m", "").length())
                 .max(Integer::compareTo).orElse(0));

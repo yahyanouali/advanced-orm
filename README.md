@@ -35,6 +35,122 @@ If you want to build an _über-jar_, execute the following command:
 
 The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
 
+## Using P6Spy for SQL Monitoring in Development
+
+This project uses P6Spy to monitor and log SQL queries during development. P6Spy is a library that intercepts database statements and logs them along with execution time and other useful information.
+
+### What is P6Spy?
+
+P6Spy is a framework that enables database statement monitoring. It intercepts all JDBC transactions and logs them to a file or console. Key benefits include:
+
+- Detailed SQL logging with execution times
+- No code changes required in your application logic
+- Ability to log only in development environments
+- Customizable logging format
+- Ability to identify slow queries
+
+### Adding P6Spy to Your Project
+
+1. Add the P6Spy dependency to your `pom.xml`:
+
+```xml
+<properties>
+    <p6spy.version>3.9.1</p6spy.version>
+</properties>
+
+<dependencies>
+    <dependency>
+        <groupId>p6spy</groupId>
+        <artifactId>p6spy</artifactId>
+        <version>${p6spy.version}</version>
+    </dependency>
+</dependencies>
+```
+
+2. Create a `spy.properties` file in your `src/main/resources` directory:
+
+```properties
+# Basic configuration
+realdriver=com.mysql.cj.jdbc.Driver
+appender=com.p6spy.engine.spy.appender.FileLogger
+logfile=target/spy.log.sql
+
+# Log format
+logMessageFormat=com.p6spy.engine.spy.appender.CustomLineFormat
+customLogMessageFormat=-- %(currentTime) | took %(executionTime) | category: %(category) | connectionId: %(connectionId) | \n%(sqlSingleLine);
+
+# Date format
+dateformat=yyyy-MM-dd HH:mm:ss
+
+# Filter configuration
+filter=false
+# include=
+# exclude=
+```
+
+### Configuring P6Spy for Development Mode Only
+
+To ensure P6Spy is only used in development mode and doesn't impact production:
+
+1. In your main `application.properties`, keep your standard database configuration:
+
+```properties
+quarkus.datasource.db-kind=mysql
+quarkus.datasource.username=root
+quarkus.datasource.password=example
+quarkus.datasource.jdbc.url=jdbc:mysql://localhost:3306/yourdb
+```
+
+2. Create an `application-dev.properties` file with P6Spy configuration:
+
+```properties
+quarkus.datasource.jdbc.driver=com.p6spy.engine.spy.P6SpyDriver
+quarkus.datasource.jdbc.url=jdbc:p6spy:mysql://localhost:3306/yourdb
+```
+
+This setup ensures that P6Spy is only used when the dev profile is active, which happens automatically when running with `./mvnw quarkus:dev`.
+
+### Example P6Spy Output
+
+When your application executes SQL queries, P6Spy logs them to the configured location (in this case, `target/spy.log.sql`). Here's an example of the output:
+
+```sql
+-- 2025-05-25 18:30:52 | took 4 | category: statement | connectionId: 0 |
+SELECT films.id,
+       films.annee,
+       films.genre,
+       films.id_realisateur,
+       films.resume,
+       films.titre
+FROM Film films;
+
+-- 2025-05-25 18:30:52 | took 2 | category: statement | connectionId: 0 |
+SELECT artiste.id,
+       artiste.annee_naissance,
+       artiste.nom,
+       artiste.prenom
+FROM Artiste artiste
+WHERE artiste.id IN (1, 123, 122, 135, 138, 142, 168, 170, 172, 79, 81, 83, 219, 91, 101, 111);
+```
+
+Each log entry includes:
+- Timestamp: When the query was executed
+- Execution time: How long the query took (in milliseconds)
+- Category: Type of statement (e.g., statement, batch, commit)
+- Connection ID: Database connection identifier
+- SQL: The actual SQL statement in a formatted way
+
+### Advanced Configuration Options
+
+P6Spy offers many configuration options:
+
+- **Slow query detection**: Set `executionThreshold` to log only queries that exceed a certain execution time
+- **Custom logging formats**: Customize the log format to include specific information
+- **Filtering**: Include or exclude specific tables or queries from logging
+- **Different appenders**: Log to console, file, or custom destinations
+
+For more details, see the [P6Spy documentation](https://p6spy.readthedocs.io/en/latest/configandusage.html).
+
 ## Creating a native executable
 
 You can create a native executable using:
