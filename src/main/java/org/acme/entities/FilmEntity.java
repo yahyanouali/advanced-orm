@@ -10,6 +10,7 @@ import lombok.Setter;
 @Table(name = "Film")
 public class FilmEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Integer id;
 
