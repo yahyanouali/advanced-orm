@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Genre {
+public class GenreEntity {
     @Id
     @Column(name = "code", nullable = false, length = 20)
     private String code;

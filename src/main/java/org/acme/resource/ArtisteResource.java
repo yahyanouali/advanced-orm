@@ -5,7 +5,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.acme.entities.Artiste;
+import org.acme.entities.ArtisteEntity;
 import org.acme.service.ArtisteRepository;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class ArtisteResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Artiste> getAllArtists() {
+    public List<ArtisteEntity> getAllArtists() {
         return artisteRepository.getArtistes();
     }
 
@@ -32,8 +32,8 @@ public class ArtisteResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createArtist(Artiste artiste) {
-        artisteRepository.saveArtiste(artiste);
+    public Response createArtist(ArtisteEntity artisteEntity) {
+        artisteRepository.saveArtiste(artisteEntity);
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -41,9 +41,9 @@ public class ArtisteResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateArtist(@PathParam("id") Integer id, Artiste artiste) {
-        artiste.setId(id);
-        artisteRepository.updateArtiste(artiste);
+    public Response updateArtist(@PathParam("id") Integer id, ArtisteEntity artisteEntity) {
+        artisteEntity.setId(id);
+        artisteRepository.updateArtiste(artisteEntity);
         return Response.ok().build();
     }
 

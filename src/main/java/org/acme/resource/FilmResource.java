@@ -4,7 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import lombok.extern.slf4j.Slf4j;
-import org.acme.entities.Film;
+import org.acme.entities.FilmEntity;
 import org.acme.service.FilmRepository;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class FilmResource {
     FilmRepository filmRepository;
 
     @GET
-    public List<Film> getFilms() {
+    public List<FilmEntity> getFilms() {
         var films = filmRepository.getFilms();
         log.info("Films trouvés : {}", films);
         return films;
@@ -27,22 +27,22 @@ public class FilmResource {
 
     @GET
     @Path("/{id}")
-    public Film getFilmById(@PathParam("id") Integer id) {
+    public FilmEntity getFilmById(@PathParam("id") Integer id) {
         var film = filmRepository.getFilmById(id);
         log.info("Film trouvé : {}", film);
         return film;
     }
 
     @POST
-    public void createFilm(Film film) {
-        log.info("Création du film : {}", film);
-        filmRepository.saveFilm(film);
+    public void createFilm(FilmEntity filmEntity) {
+        log.info("Création du film : {}", filmEntity);
+        filmRepository.saveFilm(filmEntity);
     }
 
     @PUT
-    public void updateFilm(Film film) {
-        log.info("Mise à jour du film : {}", film);
-        filmRepository.updateFilm(film);
+    public void updateFilm(FilmEntity filmEntity) {
+        log.info("Mise à jour du film : {}", filmEntity);
+        filmRepository.updateFilm(filmEntity);
     }
 
     @DELETE

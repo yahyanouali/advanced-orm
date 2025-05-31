@@ -3,12 +3,11 @@ package org.acme.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Setter
 @Entity
-public class Film {
+public class FilmEntity {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -27,6 +26,6 @@ public class Film {
 
     @ManyToOne
     @JoinColumn(name = "id_realisateur")
-    private Artiste idRealisateur;
+    private ArtisteEntity idRealisateur;
 
 }

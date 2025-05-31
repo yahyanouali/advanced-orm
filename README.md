@@ -125,12 +125,12 @@ SELECT films.id,
 FROM Film films;
 
 -- 2025-05-25 18:30:52 | took 2 | category: statement | connectionId: 0 |
-SELECT artiste.id,
-       artiste.annee_naissance,
-       artiste.nom,
-       artiste.prenom
-FROM Artiste artiste
-WHERE artiste.id IN (1, 123, 122, 135, 138, 142, 168, 170, 172, 79, 81, 83, 219, 91, 101, 111);
+SELECT artisteEntity.id,
+       artisteEntity.annee_naissance,
+       artisteEntity.nom,
+       artisteEntity.prenom
+FROM Artiste artisteEntity
+WHERE artisteEntity.id IN (1, 123, 122, 135, 138, 142, 168, 170, 172, 79, 81, 83, 219, 91, 101, 111);
 ```
 
 Each log entry includes:

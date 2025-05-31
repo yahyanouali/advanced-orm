@@ -6,13 +6,12 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Setter
 @Entity
 @ToString
-public class Artiste {
+public class ArtisteEntity {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;

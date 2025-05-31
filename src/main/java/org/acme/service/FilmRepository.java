@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.acme.entities.Film;
+import org.acme.entities.FilmEntity;
 
 import java.util.List;
 
@@ -16,31 +16,31 @@ public class FilmRepository {
     @Inject
     EntityManager em;
 
-    public List<Film> getFilms() {
-        return em.createQuery("from Film", Film.class).getResultList();
+    public List<FilmEntity> getFilms() {
+        return em.createQuery("from FilmEntity", FilmEntity.class).getResultList();
     }
 
-    public Film getFilmById(Integer id) {
-        return em.createQuery("select f from Film f where f.id = ?1", Film.class)
+    public FilmEntity getFilmById(Integer id) {
+        return em.createQuery("select f from FilmEntity f where f.id = ?1", FilmEntity.class)
                 .setParameter(1, id)
                 .getSingleResult();
     }
 
     @Transactional
-    public void saveFilm(Film film) {
-        em.persist(film);
+    public void saveFilm(FilmEntity filmEntity) {
+        em.persist(filmEntity);
     }
 
     @Transactional
-    public void updateFilm(Film film) {
-        em.merge(film);
+    public void updateFilm(FilmEntity filmEntity) {
+        em.merge(filmEntity);
     }
 
     @Transactional
     public void deleteFilm(Integer id) {
-        Film film = em.find(Film.class, id);
-        if (film != null) {
-            em.remove(film);
+        FilmEntity filmEntity = em.find(FilmEntity.class, id);
+        if (filmEntity != null) {
+            em.remove(filmEntity);
         } else {
             log.warn("Le film avec l'id {} n'existe pas", id);
         }
