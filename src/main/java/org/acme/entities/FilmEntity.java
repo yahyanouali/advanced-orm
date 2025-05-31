@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "Film")
 public class FilmEntity {
     @Id
     @Column(name = "id", nullable = false)
