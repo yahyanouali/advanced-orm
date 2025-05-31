@@ -26,8 +26,8 @@ public class FilmEntity {
     @Column(name = "resume", columnDefinition = "text")
     private String resume;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_realisateur")
-    private ArtisteEntity idRealisateur;
+    private ArtisteEntity realisateur;
 
 }
