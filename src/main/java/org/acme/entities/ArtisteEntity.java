@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -24,5 +26,8 @@ public class ArtisteEntity {
 
     @Column(name = "annee_naissance")
     private Integer anneeNaissance;
+
+    @OneToMany(mappedBy = "realisateur")
+    private List<FilmEntity> films;
 
 }

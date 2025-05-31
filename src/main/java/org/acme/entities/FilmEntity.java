@@ -1,5 +1,6 @@
 package org.acme.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class FilmEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_realisateur")
+    @JsonIgnore
     private ArtisteEntity realisateur;
 
 }
