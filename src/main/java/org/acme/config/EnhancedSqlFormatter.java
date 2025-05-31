@@ -72,7 +72,7 @@ public class EnhancedSqlFormatter implements MessageFormattingStrategy {
         sql = sql.replaceAll("\\s+", " ").trim();
 
         String[] keywords = {
-                "SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "HAVING", "LIMIT", "OFFSET",
+                "SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "HAVING", "LIMIT", "OFFSET", "INSERT", "UPDATE",
                 "JOIN", "LEFT JOIN", "RIGHT JOIN", "INNER JOIN", "OUTER JOIN", "FULL JOIN", "CROSS JOIN",
                 "UNION", "UNION ALL", "INTERSECT"
         };
